@@ -15,7 +15,6 @@ namespace CarShopApi.Data
 
         public virtual DbSet<Car> Cars { get; set; } = null!;
         public virtual DbSet<Producer> Producers { get; set; } = null!;
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Car>(entity =>
@@ -40,7 +39,7 @@ namespace CarShopApi.Data
                 entity.Property(e => e.Series).HasMaxLength(50);
 
                 entity.HasOne(d => d.Producer)
-                    .WithMany(p => p.InverseProducer)
+                    .WithMany(p => p.Cars)
                     .HasForeignKey(d => d.ProducerId)
                     .HasConstraintName("FK_Cars_ToTable");
             });

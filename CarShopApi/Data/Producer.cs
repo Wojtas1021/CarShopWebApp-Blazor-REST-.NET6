@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace CarShopApi.Data;
 
-namespace CarShopApi.Data
+public partial class Producer
 {
-    public partial class Producer
+    public Producer()
     {
-        public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? FullName { get; set; }
-        public string? Info { get; set; }
-        public bool? IsActive { get; set; }
+        Cars = new HashSet<Car>();
     }
+
+    public int Id { get; set; }
+    public string? Name { get; set; }
+    public string? FullName { get; set; }
+    public string? Info { get; set; }
+    public bool? IsActive { get; set; }
+
+    public virtual ICollection<Car> Cars { get; set; }
 }
