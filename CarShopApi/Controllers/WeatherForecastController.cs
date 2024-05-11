@@ -25,7 +25,6 @@ namespace CarShopApi.Controllers
 
             try
             {
-                throw new NotImplementedException("This is our loggin test exception");
                 return Enumerable.Range(1, 5).Select(index => new WeatherForecast
                 {
                     Date = DateTime.Now.AddDays(index),
