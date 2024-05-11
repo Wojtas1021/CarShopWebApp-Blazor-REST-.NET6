@@ -1,3 +1,4 @@
+using CarShopApi.Configurations;
 using CarShopApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -7,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connString = builder.Configuration.GetConnectionString("CarShopAppDbConnection");
 builder.Services.AddDbContext<CarShopDbContext>(options => options.UseSqlServer(connString));
+
+//adding mapper class to services to gain use where ever needed 
+builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
