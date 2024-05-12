@@ -2,6 +2,7 @@
 using CarShopApi.Data;
 using CarShopApi.Models.Car;
 using CarShopApi.Models.Producer;
+using CarShopApi.Models.User;
 
 namespace CarShopApi.Configurations;
 
@@ -22,5 +23,7 @@ public class MapperConfig : Profile
         CreateMap<Car, CarDetailsDto>().
             ForMember(p => p.ProducerName, c => c.MapFrom(map => $"{map.Producer.Name}"))
             .ReverseMap();
+
+        CreateMap<ApiUser, UserDto>().ReverseMap();
     }
 }
