@@ -103,7 +103,7 @@ public class ProducersController : ControllerBase
     // POST: api/Producers
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<ProducerCreateDtocs>> PostProducer(ProducerCreateDtocs producerDto)
+    public async Task<ActionResult<ProducerCreateDto>> PostProducer(ProducerCreateDto producerDto)
     {
         try
         {
