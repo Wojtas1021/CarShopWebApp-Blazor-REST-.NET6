@@ -2,7 +2,7 @@
 
 namespace CarShopApi.Models.Producer
 {
-    public class ProducerCreateDtocs
+    public class ProducerCreateDto
     {
         [Required]
         [StringLength(50)]
