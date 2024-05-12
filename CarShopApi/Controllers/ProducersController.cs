@@ -4,11 +4,13 @@ using CarShopApi.Data;
 using CarShopApi.Models.Producer;
 using AutoMapper;
 using CarShopApi.Static;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarShopApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ProducersController : ControllerBase
 {
     private readonly CarShopDbContext _context;
@@ -63,6 +65,7 @@ public class ProducersController : ControllerBase
     // PUT: api/Producers/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> PutProducer(int id, ProducerUpdateDto producerDto)
     {
         if (id != producerDto.Id)
@@ -103,6 +106,7 @@ public class ProducersController : ControllerBase
     // POST: api/Producers
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<ProducerCreateDto>> PostProducer(ProducerCreateDto producerDto)
     {
         try
@@ -123,6 +127,7 @@ public class ProducersController : ControllerBase
 
     // DELETE: api/Producers/5
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteProducer(int id)
     {
         try

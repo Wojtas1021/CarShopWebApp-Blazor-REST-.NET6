@@ -4,11 +4,13 @@ using CarShopApi.Data;
 using AutoMapper;
 using CarShopApi.Models.Car;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarShopApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class CarsController : ControllerBase
 {
     private readonly CarShopDbContext _context;
@@ -49,6 +51,7 @@ public class CarsController : ControllerBase
     // PUT: api/Cars/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> PutCar(int id, CarUpdateDto carDto)
     {
         if (id != carDto.Id)
@@ -86,6 +89,7 @@ public class CarsController : ControllerBase
     // POST: api/Cars
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<CarCreateDto>> PostCar(CarCreateDto carDto)
     {
         var car = mapper.Map<Car>(carDto);
@@ -97,6 +101,7 @@ public class CarsController : ControllerBase
 
     // DELETE: api/Cars/5
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteCar(int id)
     {
         var car = await _context.Cars.FindAsync(id);
