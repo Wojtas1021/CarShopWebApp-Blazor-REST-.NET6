@@ -30,7 +30,7 @@ namespace CarShopApp.Blazor.Server.UI.Provider
                 return new AuthenticationState(user);
             }
 
-            var claims = tokenContent.Claims;
+            var claims = await GetClaims();
 
             user = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
 
@@ -38,18 +38,25 @@ namespace CarShopApp.Blazor.Server.UI.Provider
         }
         public async Task LoggedIn()
         {
-            var saveToken = await localStorage.GetItemAsync<string>("accessToken");
-            var tokenContent = jwtSecurityTokenHandler.ReadJwtToken(saveToken);
-            var claims = tokenContent.Claims;
-            var user = new ClaimsPrincipal(new ClaimsIdentity(claims));
+            var claims = await GetClaims();
+            var user = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
             var authState = Task.FromResult(new AuthenticationState(user));
             NotifyAuthenticationStateChanged(authState);
         }
         public async Task LoggedOut()
         {
+            await localStorage.RemoveItemAsync("accessToken");
             var noLoggin = new ClaimsPrincipal(new ClaimsIdentity());
             var authState = Task.FromResult(new AuthenticationState(noLoggin));
             NotifyAuthenticationStateChanged(authState);
+        }
+        private async Task<List<Claim>> GetClaims()
+        {
+            var saveToken = await localStorage.GetItemAsync<string>("accessToken");
+            var tokenContent = jwtSecurityTokenHandler.ReadJwtToken(saveToken);
+            var claims = tokenContent.Claims.ToList();
+            claims.Add(new Claim(ClaimTypes.Name, tokenContent.Subject));
+            return claims;
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿@page "/users/"
+﻿@page "/users/login"
 @inject IAuthenticationService authService
+@inject NavigationManager navManager
 <h3>Login</h3>
 
 <div>
-    <EditForm Model="LoginModel" OnInvalidSubmit="HandleLogin">
+    <EditForm Model="LoginModel" OnSubmit="HandleLogin">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="form-group">
@@ -13,7 +14,7 @@
         </div>
         <br />
         <div class="form-group">
-            <label for="email">Password</label>
+            <label for="password">Password</label>
             <InputText class="form-control" type="Password" @bind-Value="LoginModel.Password" />
             <ValidationMessage For="@(() => LoginModel.Password)" />
         </div>
@@ -33,7 +34,7 @@
             var response = await authService.AuthenticateAsync(LoginModel);
             if (response)
             {
-
+                navManager.NavigateTo("/");
             }
             message = "Invalid Data, Please Try Again";
         }

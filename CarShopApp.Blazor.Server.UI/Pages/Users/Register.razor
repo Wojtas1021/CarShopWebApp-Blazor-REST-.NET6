@@ -12,7 +12,7 @@
 }
 
 <div>
-    <EditForm Model="RegistrationModel" OnInvalidSubmit="HandleRegistration">
+    <EditForm Model="RegistrationModel" OnValidSubmit="HandleRegistration">
         <DataAnnotationsValidator/>
         <ValidationSummary/>
         <div class="form-group">
@@ -22,19 +22,19 @@
         </div>
         <br />
         <div class="form-group">
-            <label for="email">Name</label>
+            <label for="name">Name</label>
             <InputText class="form-control" @bind-Value="RegistrationModel.Name" />
             <ValidationMessage For="@(() => RegistrationModel.Name)" />
         </div>
         <br />
         <div class="form-group">
-            <label for="email">Surname</label>
+            <label for="surname">Surname</label>
             <InputText class="form-control" @bind-Value="RegistrationModel.Surname" />
             <ValidationMessage For="@(() => RegistrationModel.Surname)" />
         </div>
         <br />
         <div class="form-group">
-            <label for="email">Password</label>
+            <label for="password">Password</label>
             <InputText class="form-control" type="Password" @bind-Value="RegistrationModel.Password" />
             <ValidationMessage For="@(() => RegistrationModel.Password)" />
         </div>
