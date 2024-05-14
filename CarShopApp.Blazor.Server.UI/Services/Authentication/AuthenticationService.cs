@@ -28,5 +28,9 @@ namespace CarShopApp.Blazor.Server.UI.Services.Authentication
 
             return true;
         }
+        public async Task Logout()
+        {
+            await ((ApiAuthenticationStateProvider)authenticationStateProvider).LoggedOut();
+        }
     }
 }

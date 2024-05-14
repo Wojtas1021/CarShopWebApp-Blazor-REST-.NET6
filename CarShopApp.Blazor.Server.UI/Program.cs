@@ -12,8 +12,9 @@ builder.Services.AddBlazoredLocalStorage();
 //order matters
 builder.Services.AddHttpClient<IClient, Client>(ba => ba.BaseAddress = new Uri("https://localhost:7111"));
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-builder.Services.AddScoped(p => p.GetRequiredService<ApiAuthenticationStateProvider>());
-
+builder.Services.AddScoped<ApiAuthenticationStateProvider>();
+builder.Services.AddScoped<ApiAuthenticationStateProvider>(p => 
+                p.GetRequiredService<ApiAuthenticationStateProvider>());
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
