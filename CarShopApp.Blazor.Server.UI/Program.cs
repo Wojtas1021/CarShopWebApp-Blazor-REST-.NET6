@@ -1,5 +1,7 @@
 using Blazored.LocalStorage;
+using CarShopApp.Blazor.Server.UI.Configuration;
 using CarShopApp.Blazor.Server.UI.Provider;
+using CarShopApp.Blazor.Server.UI.Services;
 using CarShopApp.Blazor.Server.UI.Services.Authentication;
 using CarShopApp.Blazor.Server.UI.Services.Base;
 
@@ -12,6 +14,10 @@ builder.Services.AddBlazoredLocalStorage();
 //order matters
 builder.Services.AddHttpClient<IClient, Client>(ba => ba.BaseAddress = new Uri("https://localhost:7111"));
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+builder.Services.AddScoped<IProducerService, ProducerService>();
+builder.Services.AddAutoMapper(typeof(MapperConfig));
+
 builder.Services.AddScoped<ApiAuthenticationStateProvider>();
 builder.Services.AddScoped<ApiAuthenticationStateProvider>(p => 
                 p.GetRequiredService<ApiAuthenticationStateProvider>());
