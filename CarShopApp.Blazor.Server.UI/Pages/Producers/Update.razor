@@ -1,0 +1,66 @@
+﻿@page "/producers/update/{id:int}"
+@inject IProducerService prodService
+@inject NavigationManager navManager
+
+<h3>Update Producer</h3>
+
+<EditForm Model="Producer" OnValidSubmit="UpdateProducer">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="name">Name</label>
+        <InputText @bind-Value="Producer.Name" class="form-control" id="name" />
+        <ValidationMessage For=@(() => Producer.Name) />
+    </div>
+    <br/>
+    <div class="form-group">
+        <label for="fullName">Full name</label>
+        <InputText @bind-Value="Producer.FullName" class="form-control" id="fullName" />
+        <ValidationMessage For=@(() => Producer.FullName) />
+    </div>
+    <br/>
+    <div class="form-group">
+        <label for="info">Information</label>
+        <InputText @bind-Value="Producer.Info" class="form-control" id="info" />
+        <ValidationMessage For=@(() => Producer.Info) />
+    </div>
+    <br />
+    <button class="btn btn-primary" type="submit">
+        <span class="oi oi-pencil"></span>
+        Update Producer
+    </button>
+
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <spacn class="oi oi-media-skip-backward"></spacn>
+        Go Back
+    </button>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private ProducerUpdateDto Producer = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        var response = await prodService.GetProducerForUpdate(id);
+        if (response.Success)
+        {
+            Producer = response.Data;
+        }
+    }
+
+    private async Task UpdateProducer()
+    {
+        var response = await prodService.UpdateProducer(id, Producer);
+        if (response.Success)
+        {
+            BackToList();
+        }
+    }
+    private void BackToList()
+    {
+        navManager.NavigateTo("/producers/");
+    }
+}

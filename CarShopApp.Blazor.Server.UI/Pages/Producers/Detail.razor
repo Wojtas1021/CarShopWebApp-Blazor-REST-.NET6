@@ -1,0 +1,81 @@
+﻿@page "/producers/details/{id:int}"
+@inject IProducerService prodService
+@inject NavigationManager navManager
+<h3>Producer Detail</h3>
+
+<EditForm Model="Producer">
+<fieldset disabled="true">
+        <div class="form-group">
+            <label for="name">Name</label> - @Producer.Name
+            <InputText @bind-Value="Producer.Name" class="form-control" id="name" />
+            <ValidationMessage For=@(() => Producer.Name) />
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="fullName">Full name</label>
+            <InputText @bind-Value="Producer.FullName" class="form-control" id="fullName" />
+            <ValidationMessage For=@(() => Producer.FullName) />
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="info">Information</label>
+            <InputText @bind-Value="Producer.Info" class="form-control" id="info" />
+            <ValidationMessage For=@(() => Producer.Info) />
+        </div>
+</fieldset>
+    <br/>
+
+    @if(Producer.Cars == null || Producer.Cars.Any() == false)
+    {
+        <div class="alert alert-dismissible alert-secondary">
+            No Cars Available for this Producer
+        </div>
+    }
+    else
+    {
+        foreach(var car in Producer.Cars)
+        {
+            <div class="card" style="width: 18rem">
+                <img src="@car.Image" class="card-img-top" alt="@car.Name"/>
+                <div class="card-body">
+                    <h5 class="card-title">@car.Name - @car.Price.ToString("C")</h5>
+                    <p class="card-text"></p>
+                    <a href="#" class="btn btn-primary">View car </a>
+                </div>
+            </div>
+        }
+    }
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <spacn class="oi oi-media-skip-backward"></spacn>
+        Go Back
+    </button>
+
+    <button @onclick="EditProducer" class="btn btn-warning">
+        <spacn class="oi oi-pencil"></spacn>
+        Edit Producer
+    </button>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private ProducerDetailsDto Producer = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        var response = await prodService.GetProducer(id);
+        if (response.Success)
+        {
+            Producer = response.Data;
+        }
+    }
+    private void BackToList()
+    {
+        navManager.NavigateTo("/producers/");
+    }
+    private void EditProducer()
+    {
+        navManager.NavigateTo($"/producers/update/{Producer.Id}");
+    }
+}

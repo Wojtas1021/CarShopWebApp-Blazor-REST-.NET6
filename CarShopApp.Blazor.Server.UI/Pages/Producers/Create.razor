@@ -1,0 +1,53 @@
+﻿@page "/producers/create/"
+@inject IProducerService prodService
+@inject NavigationManager navManager
+
+<h3>Create</h3>
+<EditForm Model="Producer" OnValidSubmit="CreateProducer">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <InputText @bind-Value="Producer.Name" class="form-control" id="name"/>
+        <ValidationMessage For=@(() => Producer.Name) />
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="fullName">Full name</label>
+        <InputText @bind-Value="Producer.FullName" class="form-control" id="fullName" />
+        <ValidationMessage For=@(() => Producer.FullName) />
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="info">Information</label>
+        <InputText @bind-Value="Producer.Info" class="form-control" id="info" />
+        <ValidationMessage For=@(() => Producer.Info) />
+    </div>
+    <br />
+    <button class="btn btn-primary" type="submit">
+        <span class="oi oi-pencil"></span>
+        Create Producer
+    </button>
+
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <spacn class="oi oi-media-skip-backward"></spacn>
+        Go Back
+    </button>
+
+</EditForm>
+
+@code {
+    private ProducerCreateDto Producer = new();
+    private async Task CreateProducer()
+    {
+        var response = await prodService.CreateProducer(Producer);
+        if (response.Success)
+        {
+            BackToList();
+        }
+    }
+    private void BackToList()
+    {
+        navManager.NavigateTo("/producers/");
+    }
+}
