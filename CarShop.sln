@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarShopApi", "CarShopApi\CarShopApi.csproj", "{DD3539B2-4219-4B6E-A981-6041F3CD99E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarShopApp.Blazor.Server.UI", "CarShopApp.Blazor.Server.UI\CarShopApp.Blazor.Server.UI.csproj", "{4EE964CC-84B1-4122-984D-3EE64E90E6E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarShopApp.Blazor.Server.UI", "CarShopApp.Blazor.Server.UI\CarShopApp.Blazor.Server.UI.csproj", "{4EE964CC-84B1-4122-984D-3EE64E90E6E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
