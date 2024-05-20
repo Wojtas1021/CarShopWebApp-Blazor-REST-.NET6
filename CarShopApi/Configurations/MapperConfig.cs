@@ -13,6 +13,7 @@ public class MapperConfig : Profile
         // create mapp and reversed
         CreateMap<ProducerCreateDto, Producer>().ReverseMap();
         CreateMap<ProducerUpdateDto, Producer>().ReverseMap();
+        CreateMap<ProducerDetailsDto, Producer>().ReverseMap();
         CreateMap<ProducerReadOnlyDto, Producer>().ReverseMap();
         
         CreateMap<CarCreateDto, Car>().ReverseMap();

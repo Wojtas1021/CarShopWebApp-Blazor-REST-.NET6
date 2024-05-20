@@ -5,6 +5,7 @@ using CarShopApi.Models.Producer;
 using AutoMapper;
 using CarShopApi.Static;
 using Microsoft.AspNetCore.Authorization;
+using AutoMapper.QueryableExtensions;
 
 namespace CarShopApi.Controllers;
 
@@ -42,18 +43,20 @@ public class ProducersController : ControllerBase
     }
     // GET: api/Producers/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<ProducerReadOnlyDto>> GetProducer(int id)
+    public async Task<ActionResult<ProducerDetailsDto>> GetProducer(int id)
     {
         try
         {
-            var producer = await _context.Producers.FindAsync(id);
+            var producer = await _context.Producers
+                .Include(c => c.Cars)
+                .ProjectTo<ProducerDetailsDto>(mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (producer == null)
             {
                 return NotFound();
             }
-            var producerDto = mapper.Map<ProducerReadOnlyDto>(producer);
-            return Ok(producerDto);
+            return Ok(producer);
         }
         catch (Exception ex)
         {
