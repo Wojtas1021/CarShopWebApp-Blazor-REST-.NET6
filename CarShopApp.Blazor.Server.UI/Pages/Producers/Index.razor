@@ -1,5 +1,6 @@
 ﻿@page "/producers/"
-@inject IProducerService authorService
+@inject IProducerService prodService
+@inject IJSRuntime js
 <h3>Index</h3>
 
 @if(response.Success == false)
@@ -18,7 +19,9 @@ else
 }
 else
 {
-    <a class="btn btn-dark" href="/producers/create"><span class="oi oi-plus" aria-hidden="true"></span>Create</a>
+    <AuthorizeView Roles="Administrator">
+            <a class="btn btn-dark" href="/producers/create"><span class="oi oi-plus" aria-hidden="true"></span>Create</a>
+    </AuthorizeView>
     <br/>
     <table class="table table-responsive">
         <thead>
@@ -37,8 +40,11 @@ else
                     <td>@producer.FullName</td>
                     <td>
                         <a class="btn btn-primary" href="/producers/details/@producer.Id"><span class="oi oi-question-mark" aria-hidden="true"></span>Details</a>
-                        <a class="btn btn-warning" href="/producers/edit/update/@producer.Id"><span class="oi oi-pencil" aria-hidden="true"></span>Edit</a>
-                        <a class="btn btn-danger" href="/producers/delete"><span class="oi oi-delete" aria-hidden="true"></span>Delete</a>
+                        
+                        <AuthorizeView Roles="Administrator">
+                                <a class="btn btn-warning" href="/producers/edit/update/@producer.Id"><span class="oi oi-pencil" aria-hidden="true"></span>Edit</a>
+                                <button class="btn btn-danger" @onclick=@(() => Delete(@producer.Id))><span class="oi oi-delete" aria-hidden="true"></span>Delete</button>
+                        </AuthorizeView>
                     </td>
                 </tr>
             }
@@ -52,10 +58,24 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        response = await authorService.GetProducers();
+        response = await prodService.GetProducers();
         if (response.Success)
         {
             Producers = response.Data;
+        }
+    }
+    private async Task Delete(int producerId)
+    {
+        var producer = Producers.First(i => i.Id == producerId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Delete {producer.FullName}?");
+
+        if (confirm)
+        {
+            await prodService.DeleteProducer(producerId);
+            if (response.Success)
+            {
+                await OnInitializedAsync();
+            }
         }
     }
 }

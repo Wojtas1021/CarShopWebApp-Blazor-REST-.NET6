@@ -1,6 +1,7 @@
 ﻿@page "/producers/update/{id:int}"
 @inject IProducerService prodService
 @inject NavigationManager navManager
+@attribute [Authorize(Roles = Roles.Administrator)]
 
 <h3>Update Producer</h3>
 

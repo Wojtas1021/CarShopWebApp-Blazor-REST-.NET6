@@ -1,8 +1,9 @@
 ﻿@page "/producers/create/"
 @inject IProducerService prodService
 @inject NavigationManager navManager
+@attribute [Authorize(Roles = Roles.Administrator)]
 
-<h3>Create</h3>
+<h3>Create Producer</h3>
 <EditForm Model="Producer" OnValidSubmit="CreateProducer">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
