@@ -1,0 +1,107 @@
+﻿@page "/cars/create/"
+@inject ICarService carService
+@inject IProducerService prodService
+@inject NavigationManager navManager
+@attribute [Authorize(Roles = Roles.Administrator)]
+
+<h3>Create Car</h3>
+<EditForm Model="Car" OnValidSubmit="CreateCar">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="name">Name</label>
+        <InputText @bind-Value="Car.Name" class="form-control" id="name" />
+        <ValidationMessage For=@(() => Car.Name) />
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="model">Model</label>
+        <InputText @bind-Value="Car.Model" class="form-control" id="model" />
+        <ValidationMessage For=@(() => Car.Model) />
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="price">Price</label>
+        <InputNumber @bind-Value="Car.Price" class="form-control" id="price" />
+        <ValidationMessage For=@(() => Car.Price) />
+    </div>
+    <div class="form-group">
+        <label for="pricePrice"></label>
+        <InputSelect @bind-Value="Car.ProducerId" class="form-control" id="producer">
+            <option value="">-- Select Producer --</option>
+            @foreach(var producer in Producers)
+            {
+                <option value="@producer.Id">@producer.FullName</option>
+            }
+        </InputSelect>
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Image</label>
+        <InputFile OnChange="HandleFileSelection"/>
+        <img src="@img" width="100" height="100" class="img-thumbnail" />
+        <p class="text-danger">@UploadFileMessage</p>
+    </div>
+    <br />
+    <button class="btn btn-primary" type="submit">
+        <span class="oi oi-pencil"></span>
+        Create Car
+    </button>
+
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <spacn class="oi oi-media-skip-backward"></spacn>
+        Go Back
+    </button>
+
+</EditForm>
+
+@code {
+    private CarCreateDto Car = new();
+    private List<ProducerReadOnlyDto> Producers = new();
+    private string UploadFileMessage = string.Empty;
+    private string img = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await prodService.GetProducers();
+        if (response.Success)
+        {
+            Producers = response.Data;
+        }
+    }
+    private async Task CreateCar()
+    {
+        var response = await carService.CreateCar(Car);
+        if (response.Success)
+        {
+            BackToList();
+        }
+    }
+    private void BackToList()
+    {
+        navManager.NavigateTo("/cars/");
+    }
+    private async Task HandleFileSelection(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if(file != null)
+        {
+            var ext = System.IO.Path.GetExtension(file.Name);
+            if (ext.ToLower().Contains("jpg") || ext.ToLower().Contains("png") || ext.ToLower().Contains("jpeg"))
+            {
+                var arr = new byte[file.Size];
+                await file.OpenReadStream().ReadAsync(arr);
+                string imageType = file.ContentType;
+                string baseString = Convert.ToBase64String(arr);
+
+                Car.Image = baseString;
+                Car.OryginalImageName = file.Name;
+                img = $"data:{imageType}; base64, {baseString}";
+            }
+            else
+            {
+                UploadFileMessage = "Upload file jpg or png";
+            }
+        }
+    }
+}
