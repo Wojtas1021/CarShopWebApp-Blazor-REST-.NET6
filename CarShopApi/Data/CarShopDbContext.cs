@@ -30,7 +30,7 @@ namespace CarShopApi.Data
 
                 entity.Property(e => e.Description).HasMaxLength(250);
 
-                entity.Property(e => e.Image).HasMaxLength(50);
+                entity.Property(e => e.Image).HasMaxLength(250);
 
                 entity.Property(e => e.Model).HasMaxLength(50);
 

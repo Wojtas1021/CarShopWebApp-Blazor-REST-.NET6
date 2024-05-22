@@ -15,11 +15,13 @@ public class CarsController : ControllerBase
 {
     private readonly CarShopDbContext _context;
     private readonly IMapper mapper;
+    private readonly IWebHostEnvironment webHostEnvironment;
 
-    public CarsController(CarShopDbContext context, IMapper mapper)
+    public CarsController(CarShopDbContext context, IMapper mapper, IWebHostEnvironment webHostEnvironment)
     {
         _context = context;
         this.mapper = mapper;
+        this.webHostEnvironment = webHostEnvironment;
     }
     // GET: api/Cars
     [HttpGet]
@@ -93,6 +95,9 @@ public class CarsController : ControllerBase
     public async Task<ActionResult<CarCreateDto>> PostCar(CarCreateDto carDto)
     {
         var car = mapper.Map<Car>(carDto);
+
+        car.Image = CreateFile(carDto.Image, carDto.OryginalImageName);
+
         _context.Cars.Add(car);
         await _context.SaveChangesAsync();
 
@@ -114,6 +119,22 @@ public class CarsController : ControllerBase
         await _context.SaveChangesAsync();
 
         return NoContent();
+    }
+
+    private string CreateFile(string imageBase64, string imageName)
+    {
+        var url = HttpContext.Request.Host.Value;
+        var ext = Path.GetExtension(imageName);
+        var fileName = $"{Guid.NewGuid().ToString()}{ ext }";
+
+        var path = $"{webHostEnvironment.WebRootPath}\\Images\\{fileName}";
+
+        byte[] image = Convert.FromBase64String(imageBase64);
+        var fileStream = System.IO.File.Create(path); 
+        fileStream.Write(image, 0, image.Length);
+        fileStream.Close();
+
+        return $"https://{url}/Images//{fileName}";
     }
 
     private async Task<bool> CarExistsAsync(int id)
