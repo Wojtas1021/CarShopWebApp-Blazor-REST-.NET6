@@ -16,6 +16,8 @@ builder.Services.AddHttpClient<IClient, Client>(ba => ba.BaseAddress = new Uri("
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddScoped<IProducerService, ProducerService>();
+builder.Services.AddScoped<ICarService, CarService>();
+
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 builder.Services.AddScoped<ApiAuthenticationStateProvider>();

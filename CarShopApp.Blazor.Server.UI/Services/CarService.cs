@@ -4,28 +4,25 @@ using CarShopApp.Blazor.Server.UI.Services.Base;
 
 namespace CarShopApp.Blazor.Server.UI.Services
 {
-    public class ProducerService : BaseHttpService, IProducerService
+    public class CarService : BaseHttpService, ICarService
     {
         private readonly IClient client;
         private readonly IMapper mapper;
 
-        public ProducerService(IClient client, ILocalStorageService localStorage, IMapper mapper) 
+        public CarService(IClient client, ILocalStorageService localStorage, IMapper mapper)
             : base(client, localStorage)
         {
             this.client = client;
             this.mapper = mapper;
         }
 
-        public async Task<Response<int>> CreateProducer(ProducerCreateDto producer)
+        public async Task<Response<int>> CreateCar(CarCreateDto car)
         {
             Response<int> response = new();
             try
             {
-                //get token
                 await GetBearerToken();
-                // get post method from api to create 
-                await client.ProducersPOSTAsync(producer);
-
+                await client.CarsPOSTAsync(car);
             }
             catch (ApiException ex)
             {
@@ -35,35 +32,35 @@ namespace CarShopApp.Blazor.Server.UI.Services
             return response;
         }
 
-        public async Task<Response<ProducerUpdateDto>> GetProducerForUpdate(int id)
+        public async Task<Response<CarUpdateDto>> CarUpdate(int id)
         {
-            Response<ProducerUpdateDto> response;
+            Response<CarUpdateDto> response;
             try
             {
                 await GetBearerToken();
-                var data = await client.ProducersGETAsync(id);
-                response = new Response<ProducerUpdateDto>
+                var data = await client.CarsGETAsync(id);
+                response = new Response<CarUpdateDto>
                 {
-                    Data = mapper.Map<ProducerUpdateDto>(data),
+                    Data = mapper.Map<CarUpdateDto>(data),
                     Success = true
                 };
             }
             catch (ApiException ex)
             {
-                response = ConvertApiExceptions<ProducerUpdateDto>(ex);
+                response = ConvertApiExceptions<CarUpdateDto>(ex);
             }
 
             return response;
         }
 
-        public async Task<Response<ProducerDetailsDto>> GetProducer(int id)
+        public async Task<Response<CarDetailsDto>> GetCar(int id)
         {
-            Response<ProducerDetailsDto> response;
+            Response<CarDetailsDto> response;
             try
             {
                 await GetBearerToken();
-                var data = await client.ProducersGETAsync(id);
-                response = new Response<ProducerDetailsDto>
+                var data = await client.CarsGETAsync(id);
+                response = new Response<CarDetailsDto>
                 {
                     Data = data,
                     Success = true
@@ -71,19 +68,19 @@ namespace CarShopApp.Blazor.Server.UI.Services
             }
             catch (ApiException ex)
             {
-                response = ConvertApiExceptions<ProducerDetailsDto>(ex);
+                response = ConvertApiExceptions<CarDetailsDto>(ex);
             }
 
             return response;
         }
-        public async Task<Response<List<ProducerReadOnlyDto>>> GetProducers()
+        public async Task<Response<List<CarReadOnlyDto>>> GetCars()
         {
-            Response<List<ProducerReadOnlyDto>> response;
+            Response<List<CarReadOnlyDto>> response;
             try
             {
                 await GetBearerToken();
-                var data = await client.ProducersAllAsync();
-                response = new Response<List<ProducerReadOnlyDto>>
+                var data = await client.CarsAllAsync();
+                response = new Response<List<CarReadOnlyDto>>
                 {
                     Data = data.ToList(),
                     Success = true
@@ -91,22 +88,18 @@ namespace CarShopApp.Blazor.Server.UI.Services
             }
             catch (ApiException ex)
             {
-                response = ConvertApiExceptions<List<ProducerReadOnlyDto>>(ex);
+                response = ConvertApiExceptions<List<CarReadOnlyDto>>(ex);
             }
 
             return response;
         }
-
-        public async Task<Response<int>> UpdateProducer(int id, ProducerUpdateDto producer)
+        public async Task<Response<int>> UpdateCar(int id, CarUpdateDto car)
         {
             Response<int> response = new();
             try
             {
-                //get token
                 await GetBearerToken();
-                // get put method from api to create 
-                await client.ProducersPUTAsync(id, producer);
-
+                await client.CarsPUTAsync(id, car);
             }
             catch (ApiException ex)
             {
@@ -116,13 +109,13 @@ namespace CarShopApp.Blazor.Server.UI.Services
             return response;
         }
 
-        public async Task<Response<int>> DeleteProducer(int id)
+        public async Task<Response<int>> DeleteCar(int id)
         {
             Response<int> response = new();
             try
             {
                 await GetBearerToken();
-                await client.ProducersDELETEAsync(id);
+                await client.CarsDELETEAsync(id);
             }
             catch (ApiException ex)
             {
