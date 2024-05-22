@@ -1,6 +1,6 @@
 ﻿namespace CarShopApi.Models.Car
 {
-    public class CarReadOnlyDto
+    public class CarReadOnlyDto : BaseDto
     {
         public string Name { get; set; }
         public string Model { get; set; }
