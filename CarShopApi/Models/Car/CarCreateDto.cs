@@ -15,6 +15,6 @@ namespace CarShopApi.Models.Car
         [Range(0, int.MaxValue)]
         public decimal? Price { get; set; }
         public string? Image { get; set; }
-        public string OryginalImageName { get; set; }
+        public string? OryginalImageName { get; set; }
     }
 }

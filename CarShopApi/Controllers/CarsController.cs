@@ -66,7 +66,20 @@ public class CarsController : ControllerBase
             return NotFound();
         }
 
+        if (string.IsNullOrEmpty(carDto.Image) == false)
+        {
+            carDto.Image = CreateFile(carDto.Image, carDto.OryginalImageName);
+
+            var picName = Path.GetFileName(carDto.Image);
+            var patch = $"{webHostEnvironment.WebRootPath}\\Images\\{picName}";
+            if(System.IO.File.Exists(patch))
+            {
+                System.IO.File.Delete(patch);
+            }
+        }
+
         mapper.Map(carDto, car);
+
         _context.Entry(car).State = EntityState.Modified;
 
         try
