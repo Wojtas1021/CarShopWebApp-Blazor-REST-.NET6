@@ -1,5 +1,72 @@
-﻿<h3>Detail</h3>
+﻿@page "/cars/details/{id:int}"
+@inject ICarService carService
+@inject NavigationManager navManager
+
+<h3>Car Details</h3>
+
+<EditForm Model="Car">
+    <fieldset disabled="true">
+        <div class="form-group">
+            <label>Car Image</label>
+            <img src="@Car.Image" width="100" height="100" class="img-thumbnail" />
+        </div>
+        <div class="form-group">
+            <label for="name">Name</label> - @Car.Name
+            <InputText @bind-Value="Car.Name" class="form-control" id="name" />
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="model">Model</label>
+            <InputText @bind-Value="Car.Model" class="form-control" id="model" />
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="model">Price</label>
+            <InputNumber @bind-Value="Car.Price" class="form-control" id="price" />
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="info">Description</label>
+            <InputNumber @bind-Value="Car.Description" class="form-control" id="description" />
+        </div>
+        <div class="form-group">
+            <label for="model">Producer</label>
+            <InputText @bind-Value="Car.ProducerName" class="form-control" id="producerName" />
+        </div>
+    </fieldset>
+    <br />
+
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <spacn class="oi oi-media-skip-backward"></spacn>
+        Go Back
+    </button>
+
+    <button @onclick="EditProducer" class="btn btn-warning">
+        <spacn class="oi oi-pencil"></spacn>
+        Edit Producer
+    </button>
+
+</EditForm>
 
 @code {
+    [Parameter]
+    public int id { get; set; }
+    private CarDetailsDto Car = new();
 
+    protected async override Task OnInitializedAsync()
+    {
+        var response = await carService.GetCar(id);
+        if (response.Success)
+        {
+            Car = response.Data;
+        }
+    }
+    private void BackToList()
+    {
+        navManager.NavigateTo("/cars/");
+    }
+    private void EditProducer()
+    {
+        navManager.NavigateTo($"/cars/update/{Car.Id}");
+    }
 }

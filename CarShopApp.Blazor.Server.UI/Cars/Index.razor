@@ -43,7 +43,7 @@ else
                         <td>@car.Name</td>
                         <td>@car.Model</td>
                         <td>@car.Price.ToString("C")</td>
-                        <td>@car.ProducerName</td>
+                        <td><a class="btn btn-link" href="/producers/details/@car.ProducerId"> @car.ProducerName </a></td>
                         <td>
                             <a class="btn btn-primary" href="/cars/details/@car.Id"><span class="oi oi-question-mark" aria-hidden="true"></span>Details</a>
 
