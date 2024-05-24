@@ -33,17 +33,22 @@
     }
     else
     {
-        foreach(var car in Producer.Cars)
-        {
-            <div class="card" style="width: 18rem">
-                <img src="@car.Image" class="card-img-top" alt="@car.Name"/>
-                <div class="card-body">
-                    <h5 class="card-title">@car.Name - @car.Price.ToString("C")</h5>
-                    <p class="card-text"></p>
-                    <a href="#" class="btn btn-primary">View car </a>
+        <div class="row">
+            @foreach(var car in Producer.Cars)
+            {
+            <div class="col-3">
+                <div class="card" style="width: 18rem">
+                    <img src="@car.Image" class="card-img-top" alt="@car.Name" style="width:286px; height:164px" />
+                    <div class="card-body">
+                        <h5 class="card-title">@car.Name - @car.Price.ToString("C")</h5>
+                        <p class="card-text"></p>
+                        <a href="#" class="btn btn-primary">View car </a>
+                    </div>
                 </div>
             </div>
-        }
+            }
+        </div>
+
     }
     <button @onclick="BackToList" class="btn btn-outline-secondary">
         <spacn class="oi oi-media-skip-backward"></spacn>

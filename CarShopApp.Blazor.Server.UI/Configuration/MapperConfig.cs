@@ -7,7 +7,8 @@ namespace CarShopApp.Blazor.Server.UI.Configuration
     {
         public MapperConfig()
         {
-            CreateMap<ProducerReadOnlyDto, ProducerUpdateDto>().ReverseMap();
+            CreateMap<ProducerDetailsDto, ProducerUpdateDto>().ReverseMap();
+            CreateMap<CarDetailsDto, CarUpdateDto>().ReverseMap();
         }
     }
 }
